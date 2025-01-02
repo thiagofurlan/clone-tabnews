@@ -3,7 +3,7 @@ import database from "infra/database";
 export default async function status(request, response) {
   const updatedAt = new Date().toISOString();
 
-  const databaseName = "local_db"; //process.env.POSTGRES_DB;
+  const databaseName = process.env.POSTGRES_DB;
   const serverVersion = await database.query("SHOW server_version;");
   const serverMaxConnections = await database.query("SHOW max_connections;");
   const openedMaxConnections = await database.query({

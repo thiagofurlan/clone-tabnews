@@ -3,7 +3,7 @@ const { exec } = require("node:child_process");
 function checkPostgress() {
   exec(
     "docker exec postgres-dev pg_isready --host localhost",
-    (_error, stdout, _stderr) => {
+    (_error, stdout) => {
       if (stdout.search("accepting connections") === -1) {
         process.stdout.write(".");
         checkPostgress();

@@ -5,7 +5,7 @@ export class InternalServerError extends Error {
     });
     this.name = "InternalServerError";
     this.action = "Contact support";
-    this.status_code = statusCode || 500;
+    this.statusCode = statusCode || 500;
   }
 
   toJSON() {
@@ -13,7 +13,7 @@ export class InternalServerError extends Error {
       name: this.name,
       message: this.message,
       action: this.action,
-      status_code: this.status_code,
+      status_code: this.statusCode,
     };
   }
 }
@@ -25,7 +25,7 @@ export class ServiceError extends Error {
     });
     this.name = "ServiceError";
     this.action = "Verify if the service is running";
-    this.status_code = 503;
+    this.statusCode = 503;
   }
 
   toJSON() {
@@ -33,7 +33,7 @@ export class ServiceError extends Error {
       name: this.name,
       message: this.message,
       action: this.action,
-      status_code: this.status_code,
+      status_code: this.statusCode,
     };
   }
 }
@@ -44,6 +44,26 @@ export class MethodNotAllowedError extends Error {
     this.name = "MethodNotAllowedError";
     this.action = "Verify if the method is correct for this endpoint";
     this.statusCode = 405;
+  }
+
+  toJSON() {
+    return {
+      name: this.name,
+      message: this.message,
+      action: this.action,
+      status_code: this.statusCode,
+    };
+  }
+}
+
+export class ValidationError extends Error {
+  constructor({ cause, message, action }) {
+    super(message || "Um erro de validação ocorreu.", {
+      cause,
+    });
+    this.name = "ValidationError";
+    this.action = action || "Ajuste os dados enviados e tente novamente.";
+    this.statusCode = 400;
   }
 
   toJSON() {

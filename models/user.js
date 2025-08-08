@@ -1,8 +1,10 @@
 import database from "infra/database";
+import password from "models/password";
 import { ValidationError, NotFoundError } from "infra/errors";
 
 async function create(userInputValues) {
   await validateUniqueUser(userInputValues.email, userInputValues.username);
+  await hashPasswordInObject(userInputValues);
 
   const newUser = await runInsertQuery(userInputValues);
 
@@ -28,6 +30,10 @@ async function create(userInputValues) {
         action: "Utilize outro email ou username para realizar o cadastro.",
       });
     }
+  }
+
+  async function hashPasswordInObject(userInputValues) {
+    userInputValues.password = await password.hash(userInputValues.password);
   }
 
   async function runInsertQuery(userInputValues) {
